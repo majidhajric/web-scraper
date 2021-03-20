@@ -1,0 +1,81 @@
+version: "3"
+
+services:
+
+
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_NON_ROOT_USER=postgres"
+      - "POSTGRES_NON_ROOT_USER_PASSWORD=postgres"
+      - "AUTH_DATABASE_NAME=keycloak"
+      - "AUTH_DATABASE_USER=keycloak"
+      - "AUTH_DATABASE_PASSWORD=keycloak"
+      - "SCRAPER_DATABASE_NAME=scraper"
+      - "SCRAPER_DATABASE_USER=scraper"
+      - "SCRAPER_DATABASE_PASSWORD=scraper"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+      - ./postgresql/initdb:/docker-entrypoint-initdb.d
+
+  authentication-server:
+    image: majidhajric/authentication-server:latest
+    container_name: authentication-server
+    build:
+      context: ./auth-server
+      args:
+        - PORT=9090
+    ports:
+      - "9090:9090"
+    environment:
+      - "PORT=9090"
+      - "KEYCLOAK_USER=keycloak"
+      - "KEYCLOAK_PASSWORD=keycloak"
+      - "DB_VENDOR=POSTGRES"
+      - "DB_ADDR=postgres"
+      - "DB_PORT=5432"
+      - "DB_DATABASE=keycloak"
+      - "DB_USER=keycloak"
+      - "DB_PASSWORD=keycloak"
+      - "PROXY_ADDRESS_FORWARDING=true"
+    depends_on:
+      - postgres
+
+  scraper:
+    image: majidhajric/scraper:relational
+    build:
+      context: ./scraper
+      dockerfile: Dockerfile
+    container_name: scraper
+    ports:
+    - "8080:8080"
+    environment:
+      PORT: 8080
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: "http://authentication-server:9090/auth/realms/scraper/protocol/openid-connect/certs"
+    links:
+      - authentication-server
+    restart: on-failure
+
+  web-ui:
+    image: majidhajric/web-ui:latest
+    container_name: web-ui
+    build:
+      context: ./web-ui
+      dockerfile: Dockerfile
+    environment:
+      - "PORT=80"
+      - "API_SERVER=http://localhost:8080/api"
+      - "AUTH_SERVER=http://localhost:9090/auth/realms/scraper"
+      - "AUTH_CLIENT_ID=scraper"
+    ports:
+      - "80:80"
+    depends_on:
+      - scraper
+      - authentication-server
+

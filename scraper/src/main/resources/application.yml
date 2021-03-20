@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: scraper
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      jdbc.lob.non_contextual_creation: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scraper
+    username: scraper
+    password: scraper
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: never
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9090/auth/realms/scraper/protocol/openid-connect/certs
+
+  jackson:
+    date-format: "yyyy-MM-dd'T'HH:mm:ss.SSSX"
+
+logging:
+  level:
+    org.hibernate.SQL: ERROR
+    org.springframework.data: DEBUG

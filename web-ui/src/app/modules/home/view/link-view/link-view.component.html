@@ -1,0 +1,14 @@
+<div class="p-3 mat-elevation-z3">
+  <p><b>{{link.title}}</b></p>
+  <a [href]="link.url" target="_blank">{{link.url}}</a>
+  <br>
+  <br>
+  <p>Tags:</p>
+  <mat-chip-list>
+    <mat-chip *ngFor="let tag of link.tags" [value]="tag">
+      {{tag}}
+    </mat-chip>
+  </mat-chip-list>
+  <br>
+  <span>Created: {{link.timeCreated.toLocaleString()}}</span>
+</div>

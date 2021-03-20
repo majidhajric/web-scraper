@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: scraper
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      jdbc.lob.non_contextual_creation: true
+
+  datasource:
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9090/auth/realms/scraper/protocol/openid-connect/certs
+
+  jackson:
+    date-format: "yyyy-MM-dd'T'HH:mm:ss.SSSX"

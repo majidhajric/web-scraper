@@ -1,0 +1,29 @@
+@import 'node_modules/bootstrap/scss/bootstrap-grid';
+@import 'node_modules/@angular/material/theming';
+
+@include mat-core();
+
+$app-light-primary: mat-palette($mat-deep-purple, 700, 300, 900);
+$app-light-accent: mat-palette($mat-pink, 400);
+$app-light-warn: mat-palette($mat-deep-orange, 500);
+
+$app-theme: mat-light-theme(
+    $app-light-primary,
+    $app-light-accent,
+    $app-light-warn
+);
+
+@include angular-material-theme($app-theme);
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+* {
+  &:active,
+  :focus {
+    outline: none !important;  // 1
+  }
+}
