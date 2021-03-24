@@ -27,7 +27,7 @@ jobs:
           name: Build Docker image - front-end
           command: |
             cd ./web-ui
-            docker build --rm=false --build-arg CONFIGURATION=heroku -f Dockerfile.builder -t majidhajric/scraper-web-ui:$CIRCLE_SHA1 .
+            docker build --rm=false --build-arg CONFIGURATION=heroku -t majidhajric/scraper-web-ui:$CIRCLE_SHA1 .
             docker push majidhajric/scraper-web-ui:$CIRCLE_SHA1
             heroku container:push -a $HEROKU_APP_NAME_FRONT_END web
             heroku container:release -a $HEROKU_APP_NAME_FRONT_END web
@@ -36,7 +36,7 @@ jobs:
           name: Build Docker image - back-end
           command: |
             cd ./scraper
-            docker build --rm=false -f Dockerfile.builder -t majidhajric/scraper:$CIRCLE_SHA1 .
+            docker build --rm=false -t majidhajric/scraper:$CIRCLE_SHA1 .
             docker push majidhajric/scraper:$CIRCLE_SHA1
             heroku container:push -a $HEROKU_APP_NAME_BACK_END web
             heroku container:release -a $HEROKU_APP_NAME_BACK_END web
