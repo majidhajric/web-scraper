@@ -1,4 +1,5 @@
 FROM node:latest  as NG_BUILDER
+ARG CONFIGURATION=development
 RUN npm install -g @angular/cli
 
 RUN mkdir -p /tmp/build
@@ -10,12 +11,14 @@ ENV PATH /tmp/build/node_modules/.bin:$PATH
 
 COPY ./ /tmp/build/
 RUN npm run ngcc
-RUN npm run build -- --output-path=./dist/out
+RUN npm i -g @angular/cli
+RUN ng build --output-path=./dist/out --configuration=$CONFIGURATION
 
 FROM nginx
 ARG PORT=4200
 EXPOSE $PORT
 ENV PORT=$PORT
+ENV CONFIGURATION=$CONFIGURATION
 
 RUN rm -rf /etc/nginx/sites-enabled/*
 RUN rm -rf /usr/share/nginx/html/*
@@ -24,4 +27,5 @@ RUN rm -rf /etc/nginx/conf.d/*
 COPY --from=NG_BUILDER /tmp/build/dist/out /usr/share/nginx/html/
 COPY ./nginx/templates/default.conf.template /etc/nginx/templates/
 
-COPY ./nginx/ng-env-setup.sh /docker-entrypoint.d/
+COPY ./nginx/env-print.sh /docker-entrypoint.d/
+RUN chmod +x /docker-entrypoint.d/env-print.sh

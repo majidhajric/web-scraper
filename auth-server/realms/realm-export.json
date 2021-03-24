@@ -688,7 +688,7 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "https://links-web-app.herokuapp.com/*",
+        "https://scraper-web-demo.herokuapp.com/*",
         "http://localhost:4200/*",
         "http://localhost/*"
       ],

@@ -10,17 +10,14 @@ import {UserInfo} from 'angular-oauth2-oidc';
 })
 export class AuthenticationActionsComponent implements OnInit, OnDestroy {
 
-  userInfo: Observable<UserInfo>;
-  userInfoSubscription: Subscription;
+  userInfo: UserInfo;
   constructor(private authService: UserSessionService) { }
 
   ngOnInit(): void {
-    this.userInfo = this.authService.getUserInfo();
-    this.userInfoSubscription = this.userInfo.subscribe();
+    this.authService.getUserInfo().subscribe( ui => this.userInfo = ui);
   }
 
   ngOnDestroy(): void {
-    this.userInfoSubscription.unsubscribe();
   }
 
   signIn() {

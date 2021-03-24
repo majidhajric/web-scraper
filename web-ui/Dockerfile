@@ -1,5 +1,6 @@
 FROM nginx
 ARG PORT=4200
+ARG CONFIGURATION=development
 EXPOSE $PORT
 ENV PORT=$PORT
 
@@ -10,4 +11,3 @@ RUN rm -rf /etc/nginx/conf.d/*
 COPY /dist/app/browser /usr/share/nginx/html/
 COPY ./nginx/templates/default.conf.template /etc/nginx/templates/
 
-COPY ./nginx/ng-env-setup.sh /docker-entrypoint.d/

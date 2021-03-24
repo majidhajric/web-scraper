@@ -48,7 +48,7 @@ services:
       - postgres
 
   scraper:
-    image: majidhajric/scraper:relational
+    image: majidhajric/scraper
     build:
       context: ./scraper
       dockerfile: Dockerfile
@@ -57,6 +57,9 @@ services:
     - "8080:8080"
     environment:
       PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/scraper
+      SPRING_DATASOURCE_USERNAME: scraper
+      SPRING_DATASOURCE_PASSWORD: scraper
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: "http://authentication-server:9090/auth/realms/scraper/protocol/openid-connect/certs"
     links:
       - authentication-server
@@ -68,11 +71,10 @@ services:
     build:
       context: ./web-ui
       dockerfile: Dockerfile
+      args:
+        - CONFIGURATION=development
     environment:
       - "PORT=80"
-      - "API_SERVER=http://localhost:8080/api"
-      - "AUTH_SERVER=http://localhost:9090/auth/realms/scraper"
-      - "AUTH_CLIENT_ID=scraper"
     ports:
       - "80:80"
     depends_on:

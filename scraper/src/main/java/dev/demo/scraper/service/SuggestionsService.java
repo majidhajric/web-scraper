@@ -1,8 +1,9 @@
-package dev.demo.scraper;
+package dev.demo.scraper.service;
 
 import dev.demo.scraper.model.PageDetails;
 import dev.demo.scraper.model.Suggestion;
 import dev.demo.scraper.repository.LinkRepository;
+import dev.demo.scraper.service.SuggestionsCache;
 import dev.demo.scraper.utils.ContentAnalyzer;
 import dev.demo.scraper.utils.ScrapUtils;
 import dev.demo.scraper.utils.URLHashUtils;

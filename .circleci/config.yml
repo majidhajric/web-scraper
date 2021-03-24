@@ -1,0 +1,79 @@
+version: 2.1
+
+jobs:
+  build-deploy-all:
+    machine: true
+    working_directory: ~/demo
+
+    steps:
+      - checkout
+      - run:
+          name: Install Heroku CLI
+          command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            heroku container:login
+
+      - run:
+          name: Build Docker image - Keycloak
+          command: |
+            cd ./auth-server
+            docker build --rm=false -t majidhajric/demo-authentication-server:$CIRCLE_SHA1 .
+
+      - run:
+          name: Push to DockerHub - Keycloak
+          command: |
+            docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+            docker push majidhajric/demo-authentication-server:$CIRCLE_SHA1
+            docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+            docker tag majidhajric/demo-authentication-server:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME_AUTHENTICATION_SERVER/web:latest
+            docker push registry.heroku.com/$HEROKU_APP_NAME_AUTHENTICATION_SERVER/web:latest
+
+      - run:
+          name: Deploy to Heroku - Keycloak
+          command: |
+            heroku container:release -a $HEROKU_APP_NAME_AUTHENTICATION_SERVER web
+
+      - run:
+          name: Build Docker image - front-end
+          command: |
+            cd ./web-ui
+            docker build --build-arg CONFIGURATION=heroku -f Dockerfile.builder -t majidhajric/scraper-web-ui:$CIRCLE_SHA1 .
+
+      - run:
+          name: Push to DockerHub - front-end
+          command: |
+            docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+            docker push majidhajric/scraper-web-ui:$CIRCLE_SHA1
+            docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+            docker tag majidhajric/scraper-web-ui:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME_FRONT_END/$CIRCLE_SHA1
+            docker push registry.heroku.com/$HEROKU_APP_NAME_FRONT_END/$CIRCLE_SHA1
+
+      - run:
+          name: Deploy to Heroku - front-end
+          command: |
+            heroku container:release $CIRCLE_SHA1 -a $HEROKU_APP_NAME_FRONT_END
+
+      - run:
+          name: Build Docker image - back-end
+          command: |
+            cd ./scraper
+            docker build --rm=false -f Dockerfile.builder -t majidhajric/scraper:$CIRCLE_SHA1 .
+
+      - run:
+          name: Push to DockerHub - back-end
+          command: |
+            docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+            docker push majidhajric/scraper:$CIRCLE_SHA1
+            docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+            docker tag majidhajric/scraper:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME_BACK_END/web:latest
+            docker push registry.heroku.com/$HEROKU_APP_NAME_BACK_END/web:latest
+
+      - run:
+          name: Deploy to Heroku - back-end
+          command: |
+            heroku container:release -a $HEROKU_APP_NAME_BACK_END web
+
+workflows:
+  build:
+    jobs:
+      - build-deploy-all

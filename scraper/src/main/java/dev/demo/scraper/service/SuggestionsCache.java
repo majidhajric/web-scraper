@@ -1,4 +1,4 @@
-package dev.demo.scraper;
+package dev.demo.scraper.service;
 
 import dev.demo.scraper.model.Suggestion;
 import org.springframework.stereotype.Component;

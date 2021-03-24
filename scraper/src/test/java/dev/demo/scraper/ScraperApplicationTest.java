@@ -10,15 +10,19 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.UUID;
 
@@ -73,7 +77,7 @@ class ScraperApplicationTest {
         LinkRequest request = new LinkRequest();
         request.setUrl(TEST_URL);
         request.setTitle(TITLE);
-        request.setTags(response.getKeywords());
+        request.setTags(new HashSet<>(Arrays.asList("real", "people")));
 
         String jsonBody = mapper.writeValueAsString(request);
 
@@ -150,10 +154,11 @@ class ScraperApplicationTest {
 
         SuggestionResponse thirdUserResponse = mapper.readValue(content, SuggestionResponse.class);
 
-        assertThat(new LinkedList<String>(thirdUserResponse.getTags()).toArray()[0]).isEqualTo("real");
-        assertThat(thirdUserResponse.getKeywords().containsAll(Arrays.asList("real", "people", "madrid"))).isTrue();
-        assertThat(thirdUserResponse.getKeywords().containsAll(Arrays.asList("real", "barcelona", "madrid"))).isTrue();
-        assertThat(thirdUserResponse.getKeywords().equals(firstUserResponse.getKeywords())).isTrue();
+        Iterator<String> iterator = thirdUserResponse.getTags().iterator();
+        String firstTag = iterator.next();
+
+        assertThat(firstTag).isEqualTo("real");
+        assertThat(thirdUserResponse.getTags().containsAll(Arrays.asList("real", "people", "madrid"))).isTrue();
 
     }
 

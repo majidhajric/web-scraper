@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo $(whoami)
-
 # Set database config from Heroku DATABASE_URL
 if [ "$DATABASE_URL" != "" ]; then
     echo "Found database configuration in DATABASE_URL=$DATABASE_URL"
@@ -184,11 +182,7 @@ fi
 
 /opt/jboss/tools/x509.sh
 /opt/jboss/tools/jgroups.sh $JGROUPS_DISCOVERY_PROTOCOL $JGROUPS_DISCOVERY_PROPERTIES
-#/opt/jboss/tools/infinispan.sh
-#/opt/jboss/tools/statistics.sh
 /opt/jboss/tools/autorun.sh
-#/opt/jboss/tools/vault.sh
-
 
 ##################
 # Start Keycloak #

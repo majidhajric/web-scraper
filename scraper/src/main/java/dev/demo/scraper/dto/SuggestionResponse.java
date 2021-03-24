@@ -14,7 +14,7 @@ public class SuggestionResponse implements Serializable {
 
     private String title;
 
-    private Set<String> keywords = new LinkedHashSet<>();
+    private Set<String> keywords ;
 
     private Set<String> tags = new LinkedHashSet<>();
 
@@ -22,8 +22,8 @@ public class SuggestionResponse implements Serializable {
         SuggestionResponse response = new SuggestionResponse();
         response.url = suggestion.getUrl();
         response.title = suggestion.getTitle();
-        response.keywords.addAll(suggestion.getKeywords());
-        response.tags.addAll(suggestion.getTags());
+        response.keywords = new LinkedHashSet<>(suggestion.getKeywords());
+        response.tags = new LinkedHashSet<>(suggestion.getTags());
         return response;
     }
 }

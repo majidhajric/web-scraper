@@ -25,8 +25,8 @@ public class Suggestion {
         this.url = url;
         this.hash = hash;
         this.title = title;
-        this.keywords.addAll(keywords);
-        this.tags.addAll(tags);
+        this.keywords = new LinkedHashSet<>(keywords);
+        this.tags = new LinkedHashSet<>(tags);
     }
 
     public boolean validate(Link link) {

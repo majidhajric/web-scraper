@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.minWidth = 600;
     dialogConfig.minHeight = 600;
-    dialogConfig.maxWidth = 600;
+    dialogConfig.maxWidth = '100%';
     dialogConfig.maxHeight = 600;
     dialogConfig.panelClass = 'my-custom-dialog-class';
 

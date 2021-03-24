@@ -1,7 +1,7 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {AuthConfig, NullValidationHandler, OAuthEvent, OAuthService, UserInfo} from 'angular-oauth2-oidc';
+import {AuthConfig, JwksValidationHandler, NullValidationHandler, OAuthEvent, OAuthService, UserInfo} from 'angular-oauth2-oidc';
 import {environment} from '../../../environments/environment';
-import {Observable, Subject, Subscription} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class UserSessionService implements OnDestroy {
     this.configure();
   }
 
-  private userInfoSubject: Subject<UserInfo> = new Subject<UserInfo>();
+  private userInfoSubject: Subject<UserInfo> = new BehaviorSubject<UserInfo>(null);
   private authEventSubscription: Subscription;
 
   private readonly authConfig: AuthConfig = {
@@ -39,11 +39,14 @@ export class UserSessionService implements OnDestroy {
     this.oauthService.configure(this.authConfig);
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
     this.authEventSubscription = this.oauthService.events.subscribe((e: OAuthEvent) => this.OAuthEventHandler(e));
-    if (this.authConfig.issuer) { // Don't ask why :(
+    if (this.authConfig.issuer) {
       this.oauthService.loadDiscoveryDocumentAndTryLogin()
         .catch((error) => {
           console.log(error.message);
-        }).then(isLoggedIn => {
+        }).then(v => {
+        if (this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken()) {
+          this.oauthService.refreshToken();
+        }
         this.oauthService.setupAutomaticSilentRefresh();
       });
     }

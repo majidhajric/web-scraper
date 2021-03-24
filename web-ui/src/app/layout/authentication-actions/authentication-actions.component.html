@@ -1,9 +1,9 @@
-<div *ngIf="!(userInfo | async)">
+<div *ngIf="!userInfo">
   <button mat-button (click)="signIn()">
     Sign In
   </button>
 </div>
-<div *ngIf="(userInfo | async)">
+<div *ngIf="userInfo">
   <button mat-button (click)="signOut()">
     Sign Out
   </button>

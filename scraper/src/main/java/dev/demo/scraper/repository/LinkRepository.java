@@ -27,4 +27,6 @@ public interface LinkRepository extends JpaRepository<Link, Long> {
             "where link.hash like :hash " +
             "group by tags.tag order by usage desc ) as tc", nativeQuery = true)
     List<String> findTagsByPopularity(@Param("hash") String hash);
+
+    void deleteAllByUserIdAndId(String userId, Long id);
 }

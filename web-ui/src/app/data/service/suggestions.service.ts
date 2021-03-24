@@ -11,13 +11,12 @@ import {Suggestion} from '../schema/suggestion';
 })
 export class SuggestionsService {
 
-  readonly API_BASE = 'suggestions'
-  readonly API = environment.apiServer + '/' + this.API_BASE;
+  readonly API_URL = environment.apiURL + '/suggestions';
 
   constructor(private httpClient: HttpClient) { }
 
   public getSuggestion(pageURL: string): Observable<Suggestion> {
     const httpParams = new HttpParams().set('pageURL', pageURL);
-    return this.httpClient.get<Suggestion>(this.API, {params: httpParams});
+    return this.httpClient.get<Suggestion>(this.API_URL, {params: httpParams});
   }
 }

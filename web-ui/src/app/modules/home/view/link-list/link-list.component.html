@@ -7,11 +7,11 @@
   </button>
 </mat-form-field>
 
-<div class="spinner-container" *ngIf="dataSource.loading$ | async">
-  <mat-spinner></mat-spinner>
+<div class="d-flex flex-column flex-grow-1 align-items-center justify-content-center" *ngIf="dataLoading">
+  <mat-spinner class="d-flex"></mat-spinner>
 </div>
 
-<mat-table class="d-flex flex-column flex-grow-1" [dataSource]="dataSource">
+<mat-table class="d-flex flex-column flex-grow-1" [dataSource]="dataSource" [hidden]="dataLoading">
 
   <ng-container matColumnDef="Link">
     <div *matHeaderCellDef>Link</div>

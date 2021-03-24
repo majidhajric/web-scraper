@@ -11,14 +11,13 @@ import {LinkRequest} from '../schema/link-request';
 })
 export class LinksService {
 
-  readonly API_BASE = 'links';
-  readonly API = environment.apiServer + '/' + this.API_BASE;
+  readonly API_URL = environment.apiURL + '/links';
 
   constructor(private httpClient: HttpClient) {
   }
 
   public getLinksPage(filter = '', page = 0, size = 5): Observable<Page<Link>> {
-    return this.httpClient.get<Page<Link>>(this.API + '/all',
+    return this.httpClient.get<Page<Link>>(this.API_URL + '/all',
       {
       params: new HttpParams()
         .set('filter', filter)
@@ -28,11 +27,11 @@ export class LinksService {
   }
 
   public getItem(id: string): Observable<Link> {
-    return this.httpClient.get<Link>(this.API + '/' + id);
+    return this.httpClient.get<Link>(this.API_URL + '/' + id);
   }
 
   public saveLink(linkRequest: LinkRequest) {
-    return this.httpClient.post<LinkRequest>(this.API, linkRequest)
+    return this.httpClient.post<LinkRequest>(this.API_URL, linkRequest)
    .subscribe();
   }
 }

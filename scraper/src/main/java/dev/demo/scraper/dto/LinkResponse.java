@@ -12,7 +12,7 @@ public class LinkResponse implements Serializable {
 
     private Long id;
 
-    private LocalDateTime timeCreated;
+    private LocalDateTime createdAt;
 
     private String url;
 
@@ -22,11 +22,11 @@ public class LinkResponse implements Serializable {
 
     public static LinkResponse toResponse(Link link) {
         LinkResponse response = new LinkResponse();
-        response.id = link.getId();
-        response.timeCreated = link.getCreatedAt();
-        response.url = link.getUrl();
-        response.title = link.getTitle();
-        response.tags = link.getTags();
+        response.setId(link.getId());
+        response.setCreatedAt(link.getCreatedAt());
+        response.setUrl(link.getUrl());
+        response.setTitle(link.getTitle());
+        response.setTags(link.getTags());
         return response;
     }
 }

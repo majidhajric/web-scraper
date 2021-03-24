@@ -1,4 +1,4 @@
-package dev.demo.scraper;
+package dev.demo.scraper.service;
 
 import dev.demo.scraper.exception.LinkException;
 import dev.demo.scraper.model.Suggestion;
@@ -39,5 +39,9 @@ public class LinksService {
 
     public Page<Link> getLinksFiltered(String userId, String tagFilter, Pageable pageable) {
         return linkRepository.findByUserIdAndTagContaining(userId, tagFilter, pageable);
+    }
+
+    public void deleteLink(String userId, Long linkId) {
+        linkRepository.deleteAllByUserIdAndId(userId, linkId);
     }
 }

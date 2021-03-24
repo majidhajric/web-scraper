@@ -10,7 +10,7 @@ import {environment} from '../../environments/environment';
     HttpClientModule,
     OAuthModule.forRoot({
       resourceServer: {
-        allowedUrls: [environment.apiServer],
+        allowedUrls: [environment.apiURL],
         sendAccessToken: true
       }
     })

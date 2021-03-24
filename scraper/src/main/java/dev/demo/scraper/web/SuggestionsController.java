@@ -1,6 +1,6 @@
 package dev.demo.scraper.web;
 
-import dev.demo.scraper.SuggestionsService;
+import dev.demo.scraper.service.SuggestionsService;
 import dev.demo.scraper.dto.SuggestionResponse;
 import dev.demo.scraper.model.Suggestion;
 import lombok.extern.slf4j.Slf4j;

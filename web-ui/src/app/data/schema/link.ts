@@ -2,7 +2,7 @@ export interface Link {
 
   id: string;
 
-  timeCreated: Date;
+  createdAt: Date;
 
   url: string;
 

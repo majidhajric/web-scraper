@@ -1,3 +1,6 @@
+server:
+  port: ${PORT:8080}
+
 spring:
   application:
     name: scraper
@@ -9,11 +12,11 @@ spring:
       jdbc.lob.non_contextual_creation: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/scraper
-    username: scraper
-    password: scraper
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/scraper}
+    username: ${SPRING_DATASOURCE_USERNAME:scraper}
+    password: ${SPRING_DATASOURCE_PASSWORD:scraper}
     driver-class-name: org.postgresql.Driver
-    initialization-mode: never
+    initialization-mode: always
 
   security:
     oauth2:

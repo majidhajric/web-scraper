@@ -1,6 +1,6 @@
 package dev.demo.scraper.web;
 
-import dev.demo.scraper.LinksService;
+import dev.demo.scraper.service.LinksService;
 import dev.demo.scraper.dto.LinkRequest;
 import dev.demo.scraper.dto.LinkResponse;
 import dev.demo.scraper.model.jpa.Link;
@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,5 +70,12 @@ public class LinksController {
 
 
         return new PageImpl<>(responseList);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteLink(@PathVariable("id") Long id, @AuthenticationPrincipal Jwt jwt) {
+        String userId = getUserId(jwt);
+        linksService.deleteLink(userId, id);
     }
 }

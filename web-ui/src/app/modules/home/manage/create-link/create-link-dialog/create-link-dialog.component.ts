@@ -60,6 +60,7 @@ export class CreateLinkDialogComponent implements OnInit, AfterViewInit, OnDestr
         this.tags = suggestion.tags;
         this.linkRequest.tags = [];
         this.linkRequest.url = suggestion.url;
+        this.linkRequest.title = suggestion.title;
         this.keywordsSelect.resetValues();
         this.tagsSelect.resetValues();
       });
