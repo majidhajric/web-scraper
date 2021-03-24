@@ -45,13 +45,13 @@ jobs:
             docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
             docker push majidhajric/scraper-web-ui:$CIRCLE_SHA1
             docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
-            docker tag majidhajric/scraper-web-ui:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME_FRONT_END/$CIRCLE_SHA1
-            docker push registry.heroku.com/$HEROKU_APP_NAME_FRONT_END/$CIRCLE_SHA1
+            docker tag majidhajric/scraper-web-ui:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME_FRONT_END/latest
+            docker push registry.heroku.com/$HEROKU_APP_NAME_FRONT_END/latest
 
       - run:
           name: Deploy to Heroku - front-end
           command: |
-            heroku container:release $CIRCLE_SHA1 -a $HEROKU_APP_NAME_FRONT_END
+            heroku container:release latest -a $HEROKU_APP_NAME_FRONT_END
 
       - run:
           name: Build Docker image - back-end
