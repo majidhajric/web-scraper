@@ -31,13 +31,13 @@ Features:
 + Get suggested tags for existing link, based on the link content analysis. - mandatory
 + Add tags to a link.
 
-##Solution
+## Solution
 
 Full-stack solution is done with Spring and Angular, deployed to Heroku using Docker.  
 
 https://scraper-web-demo.herokuapp.com/
 
-##TODO
+## TODO
 
 1. Front-end polish
 2. Delete Link feature
