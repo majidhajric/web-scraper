@@ -51,7 +51,7 @@ services:
     image: majidhajric/scraper
     build:
       context: ./scraper
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.development
     container_name: scraper
     ports:
     - "8080:8080"
@@ -70,7 +70,7 @@ services:
     container_name: web-ui
     build:
       context: ./web-ui
-      dockerfile: Dockerfile
+      dockerfile: web-ui/Dockerfile.development
       args:
         - CONFIGURATION=development
     environment:
