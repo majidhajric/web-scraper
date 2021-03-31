@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.list-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin: 56px 8%;
+}
+
+.link-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.search-box {
+  width: 100%;
+  margin: 0 1rem 0;
+}
+
+.fab-bottom-right {
+  position: absolute;
+  right: 28px;
+  bottom: 28px;
+}

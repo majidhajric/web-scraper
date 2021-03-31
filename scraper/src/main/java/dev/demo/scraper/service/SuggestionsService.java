@@ -1,9 +1,10 @@
 package dev.demo.scraper.service;
 
+import dev.demo.scraper.exception.LinkException;
 import dev.demo.scraper.model.PageDetails;
 import dev.demo.scraper.model.Suggestion;
+import dev.demo.scraper.model.jpa.Link;
 import dev.demo.scraper.repository.LinkRepository;
-import dev.demo.scraper.service.SuggestionsCache;
 import dev.demo.scraper.utils.ContentAnalyzer;
 import dev.demo.scraper.utils.ScrapUtils;
 import dev.demo.scraper.utils.URLHashUtils;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -30,8 +32,14 @@ public class SuggestionsService {
     }
 
     public Suggestion createSuggestion(String userId, String url) throws IOException {
-        PageDetails pageDetails = ScrapUtils.scrap(url);
         String hash = URLHashUtils.hash(url);
+
+        Optional<Link> linkOptional = linkRepository.findAllByUserIdAndAndHash(userId,hash);
+        if (linkOptional.isPresent()) {
+            throw new LinkException(LinkException.Message.DUPLICATE_LINK);
+        }
+
+        PageDetails pageDetails = ScrapUtils.scrap(url);
         Set<String> keywords = ContentAnalyzer.analyse(pageDetails.getContent());
         List<String> tagsByPopularity = linkRepository.findTagsByPopularity(hash);
         Set<String> tags = new LinkedHashSet<>(tagsByPopularity);

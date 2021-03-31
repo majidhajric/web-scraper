@@ -8,6 +8,6 @@ RUN rm -rf /etc/nginx/sites-enabled/*
 RUN rm -rf /usr/share/nginx/html/*
 RUN rm -rf /etc/nginx/conf.d/*
 
-COPY /dist/app/browser /usr/share/nginx/html/
+COPY /dist/web /usr/share/nginx/html/
 COPY ./nginx/templates/default.conf.template /etc/nginx/templates/
 

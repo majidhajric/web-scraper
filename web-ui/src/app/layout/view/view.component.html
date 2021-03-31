@@ -1,0 +1,30 @@
+
+  <div class="list-container mat-elevation-z3">
+
+    <mat-toolbar>
+      <mat-form-field class="search-box" floatLabel="never">
+        <mat-label class="text-muted" >Search by Tag</mat-label>
+        <input matInput type="text" name="filter-input" [(ngModel)]="search">
+
+        <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button class="mx-2" [disabled]="!search" mat-raised-button aria-label="Search" color="primary" (click)="loadLinks()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <div class="link-list">
+      <app-link *ngFor="let l of links" [link]="l" (deleteEvent)="deleteLink($event)"></app-link>
+    </div>
+
+
+
+    <button mat-fab class="fab-bottom-right" color="accent" aria-label="Add Link" routerLink="/new">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <mat-paginator [length]="page?.totalElements"  [pageSizeOptions]="[3, 5, 10]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+

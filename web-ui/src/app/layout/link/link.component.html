@@ -1,0 +1,16 @@
+<div class="link-card mat-elevation-z1">
+  <div class="link-card-header">
+    <h2>{{link.title}}</h2>
+    <span class="app-spacer"></span>
+    <a [href]="link.url" target="_blank">
+      <button mat-icon-button color="primary"><mat-icon>open_in_new</mat-icon></button>
+    </a>
+    <button  mat-icon-button color="warn" (click)="doDelete()"><mat-icon>delete</mat-icon></button>
+  </div>
+
+  <mat-chip-list class="tag-chip-list">
+    <mat-chip *ngFor="let tag of link.tags" >
+      {{tag}}
+    </mat-chip>
+  </mat-chip-list>
+</div>

@@ -14,7 +14,8 @@ public class LinkException extends RuntimeException {
 
     @RequiredArgsConstructor
     public enum Message {
-        INVALID_LINK("Invalid Link");
+        INVALID_LINK("Invalid Link"),
+        DUPLICATE_LINK("Link with same URL exists.");
         @Getter
         private final String message;
     }

@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface LinkRepository extends JpaRepository<Link, Long> {
@@ -16,6 +18,8 @@ public interface LinkRepository extends JpaRepository<Link, Long> {
     Link save(Link link);
 
     Page<Link> findAllByUserIdOrderByCreatedAtDesc(String userId, Pageable pageable);
+
+    Optional<Link> findAllByUserIdAndAndHash(String userId, String hash);
 
     @Query(value = "select * from link l where l.user_id=:userId and :tag in (select t.tag from tags t where t.link_id=l.id) order by l.created_at desc",
             countQuery = "select count(*) from link l where l.user_id=:userId and :tag in (select t.tag from tags t where t.link_id=l.id)",

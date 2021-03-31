@@ -1,8 +1,8 @@
 package dev.demo.scraper.web;
 
 import dev.demo.scraper.service.LinksService;
-import dev.demo.scraper.dto.LinkRequest;
-import dev.demo.scraper.dto.LinkResponse;
+import dev.demo.scraper.web.dto.LinkRequest;
+import dev.demo.scraper.web.dto.LinkResponse;
 import dev.demo.scraper.model.jpa.Link;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -57,7 +57,7 @@ public class LinksController {
                                           @AuthenticationPrincipal Jwt jwt) {
         String userId = getUserId(jwt);
         Pageable pageable = PageRequest.of(page, size);
-        Page<Link> linkPage = null;
+        Page<Link> linkPage;
         if (filter.isEmpty()) {
             linkPage = linksService.getAllLinks(userId, pageable);
         } else {
@@ -78,4 +78,5 @@ public class LinksController {
         String userId = getUserId(jwt);
         linksService.deleteLink(userId, id);
     }
+
 }

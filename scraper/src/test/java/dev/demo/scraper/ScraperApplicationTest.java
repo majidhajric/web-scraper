@@ -1,29 +1,25 @@
 package dev.demo.scraper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.demo.scraper.dto.LinkRequest;
-import dev.demo.scraper.dto.SuggestionResponse;
 import dev.demo.scraper.model.PageDetails;
 import dev.demo.scraper.utils.ScrapUtils;
+import dev.demo.scraper.web.dto.LinkRequest;
+import dev.demo.scraper.web.dto.SuggestionResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;

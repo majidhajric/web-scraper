@@ -1,0 +1,39 @@
+<div class="container mat-elevation-z3">
+
+  <mat-toolbar>
+    <mat-form-field class="link-box" floatLabel="never">
+      <mat-label class="text-muted" >Enter URL</mat-label>
+      <input matInput type="text" name="url" id="url" [(ngModel)]="url">
+      <button mat-button *ngIf="url" matSuffix mat-icon-button aria-label="Clear" (click)="url=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <button [disabled]="!url" mat-raised-button aria-label="Search" color="primary" (click)="doAnalyse()">
+      <mat-icon>spellcheck</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div class="spinner-container" *ngIf="loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="suggestion-result" *ngIf="!(loading$ | async)">
+
+    <app-chips-multi-select title="Keywords" [options]="keywords" (selectedItemsEvent)="tagsSelected($event)"></app-chips-multi-select>
+
+    <app-chips-multi-select title="Tags" [options]="tags" (selectedItemsEvent)="tagsSelected($event)"></app-chips-multi-select>
+
+    <div class="actions-container">
+      <button mat-raised-button color="primary" aria-label="Home" routerLink="/home">
+        <mat-icon>home</mat-icon>
+        Home
+      </button>
+      <span class="app-spacer"></span>
+      <button mat-raised-button color="accent" aria-label="Save"[disabled]="!selection.size" (click)="doSave()">
+        <mat-icon>save</mat-icon>
+        Save
+      </button>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  margin-top: 4px;
+}
+
+.link-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.link-card-header {
+  display: flex;
+  padding: 18px 36px 0;
+}
+
+.tag-chip-list {
+  padding: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}

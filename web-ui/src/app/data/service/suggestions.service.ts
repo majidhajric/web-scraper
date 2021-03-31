@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Link} from '../schema/link';
+import {Suggestion} from '../model/suggestion';
 import {environment} from '../../../environments/environment';
-import {Suggestion} from '../schema/suggestion';
 
 // @ts-ignore
 @Injectable({
@@ -11,7 +10,7 @@ import {Suggestion} from '../schema/suggestion';
 })
 export class SuggestionsService {
 
-  readonly API_URL = environment.apiURL + '/suggestions';
+  readonly API_URL = environment.apiServer + '/api/suggestions';
 
   constructor(private httpClient: HttpClient) { }
 

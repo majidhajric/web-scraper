@@ -1,34 +1,28 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import {ContentLayoutComponent} from './layout/content-layout/content-layout.component';
-import {LandingComponent} from '@layout/landing/landing.component';
-import {AuthGuard} from '@app/guards/auth.guard';
-
+import { RouterModule, Routes } from '@angular/router';
+import {ViewComponent} from './layout/view/view.component';
+import {CreateLinkComponent} from './layout/create-link/create-link.component';
+import {LandingComponent} from './layout/landing/landing.component';
+import {AuthGuard} from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: ContentLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: LandingComponent
-      },
-      {
-        path: 'home',
-        loadChildren: () => import('./modules/home/home.module').then(m => m.HomeModule),
-        canActivate: [AuthGuard],
-      },
-      {
-        path: '**',
-        redirectTo: '/home',
-        pathMatch: 'full'
-      }
-    ]
+    component: LandingComponent
+  },
+  {
+    path: 'home',
+    component: ViewComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'new',
+    component: CreateLinkComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: '**',
-    redirectTo: '/home',
+    redirectTo: '/',
     pathMatch: 'full'
   }
 ];

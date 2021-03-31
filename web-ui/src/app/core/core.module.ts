@@ -1,24 +1,22 @@
-import {ErrorHandler, NgModule, Optional, SkipSelf} from '@angular/core';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {OAuthModule, OAuthResourceServerErrorHandler} from 'angular-oauth2-oidc';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
+import {OAuthModule} from 'angular-oauth2-oidc';
 import {environment} from '../../environments/environment';
+
 
 
 @NgModule({
   declarations: [],
   imports: [
+    CommonModule,
     HttpClientModule,
     OAuthModule.forRoot({
       resourceServer: {
-        allowedUrls: [environment.apiURL],
+        allowedUrls: [environment.apiServer],
         sendAccessToken: true
       }
     })
-  ],
-  providers: [],
+  ]
 })
-export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
-    // throwIfAlreadyLoaded(parentModule, 'CoreModule');
-  }
-}
+export class CoreModule { }

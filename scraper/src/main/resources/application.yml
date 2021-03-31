@@ -27,6 +27,16 @@ spring:
   jackson:
     date-format: "yyyy-MM-dd'T'HH:mm:ss.SSSX"
 
+springdoc:
+  version: '@springdoc.version@'
+  swagger-ui:
+    oauth:
+      clientId: scraper
+      clientSecret:
+  oAuthFlow:
+    authorizationUrl: http://localhost:8180/auth/realms/scraper/protocol/openid-connect/auth
+    tokenUrl: http://localhost:8180/auth/realms/scraper/protocol/openid-connect/token
+
 logging:
   level:
     org.hibernate.SQL: ERROR

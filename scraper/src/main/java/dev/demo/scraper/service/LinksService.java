@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Slf4j
 @Service
 public class LinksService {
@@ -41,6 +43,7 @@ public class LinksService {
         return linkRepository.findByUserIdAndTagContaining(userId, tagFilter, pageable);
     }
 
+    @Transactional
     public void deleteLink(String userId, Long linkId) {
         linkRepository.deleteAllByUserIdAndId(userId, linkId);
     }

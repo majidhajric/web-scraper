@@ -21,6 +21,8 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [],
@@ -47,7 +49,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatNativeDateModule,
     MatInputModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatStepperModule,
   ],
   exports: [
     MatButtonModule,
@@ -72,7 +75,11 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatNativeDateModule,
     MatInputModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatStepperModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatStepperModule,
   ]
 })
 export class MaterialModule {

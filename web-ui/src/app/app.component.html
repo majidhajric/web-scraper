@@ -1,1 +1,14 @@
+<mat-toolbar color="primary">
+  <span>Scraper</span>
+  <span class="app-spacer"></span>
+  <button mat-button *ngIf="!isAuthenticated" aria-label="LogIn" (click)="logIn()">
+    <mat-icon>login</mat-icon>
+    SigIn
+  </button>
+  <button mat-button *ngIf="isAuthenticated" aria-label="LogOut" (click)="logOut()">
+    <mat-icon>logout</mat-icon>
+    SigOut
+  </button>
+</mat-toolbar>
+
 <router-outlet></router-outlet>
