@@ -91,12 +91,10 @@
               "browserTarget": "web:build:production"
             },
             "development": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
-                }
-              ]
+              "browserTarget": "web:build:development"
+            },
+            "heroku": {
+              "browserTarget": "web:build:heroku"
             }
           }
         },

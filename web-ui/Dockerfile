@@ -11,7 +11,7 @@ ENV PATH /tmp/build/node_modules/.bin:$PATH
 
 COPY ./ /tmp/build/
 RUN npm i -g @angular/cli
-RUN ng build --output-path=./dist/out --configuration=$CONFIGURATION
+RUN ng build --output-path=./dist/out --configuration=heroku
 
 FROM nginx
 ARG PORT=4200
