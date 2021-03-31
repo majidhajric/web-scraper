@@ -35,7 +35,7 @@ Features:
 
 Full-stack solution is done with Spring and Angular, deployed to Heroku using Docker.  
 
-https://scraper-web-demo.herokuapp.com/
+https://demo-web-scraper.herokuapp.com/
 
 ## TODO
 

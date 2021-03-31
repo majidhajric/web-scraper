@@ -1,5 +1,5 @@
 FROM node:latest  as NG_BUILDER
-ARG CONFIGURATION=development
+ARG CONFIGURATION=heroku
 RUN npm install -g @angular/cli
 
 RUN mkdir -p /tmp/build
