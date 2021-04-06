@@ -5,8 +5,7 @@ import dev.demo.scraper.model.PageDetails;
 import dev.demo.scraper.model.Suggestion;
 import dev.demo.scraper.model.jpa.Link;
 import dev.demo.scraper.repository.LinkRepository;
-import dev.demo.scraper.utils.ContentAnalyzer;
-import dev.demo.scraper.utils.ScrapUtils;
+import dev.demo.scraper.utils.Analyzer;
 import dev.demo.scraper.utils.URLHashUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,14 +38,16 @@ public class SuggestionsService {
             throw new LinkException(LinkException.Message.DUPLICATE_LINK);
         }
 
-        PageDetails pageDetails = ScrapUtils.scrap(url);
-        Set<String> keywords = ContentAnalyzer.analyse(pageDetails.getContent());
+        PageDetails pageDetails = Analyzer.analysePage(url);
+
         List<String> tagsByPopularity = linkRepository.findTagsByPopularity(hash);
         Set<String> tags = new LinkedHashSet<>(tagsByPopularity);
 
-        Suggestion suggestion = new Suggestion(url, URLHashUtils.hash(url), pageDetails.getTitle(), keywords, tags);
+        Suggestion suggestion = new Suggestion(url, URLHashUtils.hash(url), pageDetails.getTitle(), pageDetails.getKeywords(), tags);
 
         suggestionsCache.put(userId, suggestion);
         return suggestion;
     }
+
+
 }

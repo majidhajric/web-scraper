@@ -1,10 +1,10 @@
 package dev.demo.scraper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.demo.scraper.model.PageDetails;
-import dev.demo.scraper.utils.ScrapUtils;
 import dev.demo.scraper.controller.dto.LinkRequest;
 import dev.demo.scraper.controller.dto.SuggestionResponse;
+import dev.demo.scraper.model.PageDetails;
+import dev.demo.scraper.utils.Analyzer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -19,10 +19,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,38 +34,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ScraperApplicationTest {
 
-    private static final String CONTENT = "Tonight's big duel between Real Madrid and Barcelona has been played in front of two hundred people.\n" +
-            "One hundred of people was from Barcelona, while another one hundred was from Real Madrid.\n" +
-            "Ronaldo was player of the night. Ronaldo scored twice. Ronaldo was briliant.\n" +
-            "Ronaldo provided fun for the people.\n" +
-            "People were saying:Ronaldo,Ronaldo,Ronaldo...";
-
-    private static final String TITLE = "El-Classico";
+    private static final String TITLE = "title";
     private static final String TEST_URL = "http://example.com/page";
     private final String firstUserId = UUID.randomUUID().toString();
     private final String secondUserId = UUID.randomUUID().toString();
     private final String thirdUserId = UUID.randomUUID().toString();
+
     @Autowired
     private MockMvc mockMvc;
     private ObjectMapper mapper = new ObjectMapper();
 
+    private static PageDetails createPageDetails() {
+        Set<String> keywords = new LinkedHashSet<>(Arrays.asList("word1", "word2", "word3"));
+        return new PageDetails(TITLE,keywords);
+    }
+
     @BeforeAll
     static void setup_scrap_utils_mock() {
-        MockedStatic<ScrapUtils> scrapUtilsMockedStatic = Mockito.mockStatic(ScrapUtils.class);
-        scrapUtilsMockedStatic.when(() -> ScrapUtils.scrap(anyString())).thenReturn(new PageDetails(TITLE, CONTENT));
+        MockedStatic<Analyzer> analyzerMockedStatic = Mockito.mockStatic(Analyzer.class);
+        analyzerMockedStatic.when(() -> Analyzer.analysePage(anyString())).thenReturn(createPageDetails());
     }
 
     @WithMockUser
     @Test
-    void create_duplicate_link_test() throws Exception {
+    void when_create_duplicate_link_then_client_error() throws Exception {
 
         String content = mockMvc.perform(get("/api/suggestions")
                 .param("pageURL", TEST_URL)
                 .with(jwt().jwt((jwt) -> jwt.claim("sub", firstUserId))))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.keywords").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.keywords").isArray())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.keywords[0]").value("ronaldo"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.tags").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.keywords[0]").value("word1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.keywords[1]").value("word2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.keywords[2]").value("word3"))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -73,7 +74,7 @@ class ScraperApplicationTest {
         LinkRequest request = new LinkRequest();
         request.setUrl(TEST_URL);
         request.setTitle(TITLE);
-        request.setTags(new HashSet<>(Arrays.asList("real", "people")));
+        request.setTags(new HashSet<>(Arrays.asList("word1", "word2", "word3")));
 
         String jsonBody = mapper.writeValueAsString(request);
 
@@ -96,7 +97,7 @@ class ScraperApplicationTest {
 
     @WithMockUser
     @Test
-    void create_link_with_popular_tags_test() throws Exception {
+    void when_create_link_with_popular_tags_then_return_popular() throws Exception {
         String requestBody = "";
 
         String content = mockMvc.perform(get("/api/suggestions")
@@ -111,7 +112,7 @@ class ScraperApplicationTest {
         request.setTitle(TITLE);
 
         // first user
-        request.setTags(new HashSet<>(Arrays.asList("real", "people")));
+        request.setTags(new HashSet<>(Arrays.asList("word1", "word3")));
         requestBody = mapper.writeValueAsString(request);
 
         mockMvc.perform(post("/api/links")
@@ -128,7 +129,7 @@ class ScraperApplicationTest {
                 .with(jwt().jwt((jwt) -> jwt.claim("sub", secondUserId))))
                 .andReturn();
 
-        request.setTags(new HashSet<>(Arrays.asList("real", "madrid")));
+        request.setTags(new HashSet<>(Arrays.asList("word2", "word3")));
         requestBody = mapper.writeValueAsString(request);
 
         mockMvc.perform(post("/api/links")
@@ -141,20 +142,15 @@ class ScraperApplicationTest {
 
         // third user
 
-        content = mockMvc.perform(get("/api/suggestions")
+        mockMvc.perform(get("/api/suggestions")
                 .param("pageURL", TEST_URL)
                 .with(jwt().jwt((jwt) -> jwt.claim("sub", thirdUserId))))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        SuggestionResponse thirdUserResponse = mapper.readValue(content, SuggestionResponse.class);
-
-        Iterator<String> iterator = thirdUserResponse.getTags().iterator();
-        String firstTag = iterator.next();
-
-        assertThat(firstTag).isEqualTo("real");
-        assertThat(thirdUserResponse.getTags().containsAll(Arrays.asList("real", "people", "madrid"))).isTrue();
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tags").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tags").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tags[0]").value("word3"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tags[1]").value("word1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.tags[2]").value("word2"))
+                .andReturn();
 
     }
 

@@ -16,7 +16,7 @@ public class SuggestionResponse implements Serializable {
 
     private Set<String> keywords;
 
-    private Set<String> tags = new LinkedHashSet<>();
+    private Set<String> tags;
 
     public static SuggestionResponse toResponse(Suggestion suggestion) {
         SuggestionResponse response = new SuggestionResponse();
