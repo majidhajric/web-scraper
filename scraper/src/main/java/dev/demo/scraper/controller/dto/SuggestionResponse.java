@@ -1,4 +1,4 @@
-package dev.demo.scraper.web.dto;
+package dev.demo.scraper.controller.dto;
 
 import dev.demo.scraper.model.Suggestion;
 import lombok.Getter;
@@ -14,9 +14,9 @@ public class SuggestionResponse implements Serializable {
 
     private String title;
 
-    private Set<String> keywords ;
+    private Set<String> keywords;
 
-    private Set<String> tags = new LinkedHashSet<>();
+    private Set<String> tags;
 
     public static SuggestionResponse toResponse(Suggestion suggestion) {
         SuggestionResponse response = new SuggestionResponse();

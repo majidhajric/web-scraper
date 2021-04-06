@@ -1,4 +1,4 @@
-package dev.demo.scraper.web.dto;
+package dev.demo.scraper.controller.dto;
 
 import dev.demo.scraper.model.jpa.Link;
 import dev.demo.scraper.utils.URLHashUtils;

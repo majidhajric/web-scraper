@@ -1,16 +1,15 @@
-package dev.demo.scraper.web;
+package dev.demo.scraper.controller;
 
-import dev.demo.scraper.service.LinksService;
-import dev.demo.scraper.web.dto.LinkRequest;
-import dev.demo.scraper.web.dto.LinkResponse;
+import dev.demo.scraper.controller.dto.LinkRequest;
+import dev.demo.scraper.controller.dto.LinkResponse;
 import dev.demo.scraper.model.jpa.Link;
+import dev.demo.scraper.service.LinksService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +36,7 @@ public class LinksController {
         this.linksService = linksService;
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public LinkResponse createLink(@RequestBody LinkRequest linkRequest, @AuthenticationPrincipal Jwt jwt) {
         String userId = getUserId(jwt);
@@ -67,7 +66,6 @@ public class LinksController {
         List<LinkResponse> responseList = linkPage.stream()
                 .map(LinkResponse::toResponse)
                 .collect(Collectors.toList());
-
 
         return new PageImpl<>(responseList);
     }
