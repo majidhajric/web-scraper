@@ -1,11 +1,10 @@
-package dev.demo.scraper.web;
+package dev.demo.scraper.controller;
 
+import dev.demo.scraper.controller.dto.SuggestionResponse;
 import dev.demo.scraper.model.Suggestion;
 import dev.demo.scraper.service.SuggestionsService;
-import dev.demo.scraper.web.dto.SuggestionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +26,9 @@ public class SuggestionsController {
         this.suggestionsService = suggestionsService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public SuggestionResponse getSuggestions(@RequestParam(name = "pageURL") String pageURL, @AuthenticationPrincipal Jwt jwt)
-            throws IOException {
+    public SuggestionResponse getSuggestions(@RequestParam(name = "pageURL") String pageURL, @AuthenticationPrincipal Jwt jwt) throws IOException {
         String userId = jwt.getClaim("sub");
         Suggestion suggestion = suggestionsService.createSuggestion(userId, pageURL);
 

@@ -34,7 +34,7 @@ public class SuggestionsService {
     public Suggestion createSuggestion(String userId, String url) throws IOException {
         String hash = URLHashUtils.hash(url);
 
-        Optional<Link> linkOptional = linkRepository.findAllByUserIdAndAndHash(userId,hash);
+        Optional<Link> linkOptional = linkRepository.findAllByUserIdAndAndHash(userId, hash);
         if (linkOptional.isPresent()) {
             throw new LinkException(LinkException.Message.DUPLICATE_LINK);
         }
