@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @RestController
@@ -28,7 +28,8 @@ public class SuggestionsController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public SuggestionResponse getSuggestions(@RequestParam(name = "pageURL") String pageURL, @AuthenticationPrincipal Jwt jwt) throws IOException {
+    public SuggestionResponse getSuggestions(@RequestParam(name = "pageURL") String pageURL, @AuthenticationPrincipal Jwt jwt)
+            throws ExecutionException, InterruptedException {
         String userId = jwt.getClaim("sub");
         Suggestion suggestion = suggestionsService.createSuggestion(userId, pageURL);
 
