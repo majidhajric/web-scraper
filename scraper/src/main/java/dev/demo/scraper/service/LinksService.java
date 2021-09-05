@@ -4,6 +4,7 @@ import dev.demo.scraper.exception.LinkException;
 import dev.demo.scraper.model.Suggestion;
 import dev.demo.scraper.model.jpa.Link;
 import dev.demo.scraper.repository.LinkRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class LinksService {
@@ -19,13 +21,7 @@ public class LinksService {
 
     private final SuggestionsCache suggestionsCache;
 
-    public LinksService(LinkRepository linkRepository, SuggestionsCache suggestionsCache) {
-        this.linkRepository = linkRepository;
-        this.suggestionsCache = suggestionsCache;
-    }
-
     public Link createLink(Link link) {
-
         Suggestion suggestion = suggestionsCache.getAndRemove(link.getUserId());
 
         if (suggestion == null || !suggestion.validate(link)) {
@@ -47,4 +43,5 @@ public class LinksService {
     public void deleteLink(String userId, Long linkId) {
         linkRepository.deleteAllByUserIdAndId(userId, linkId);
     }
+
 }

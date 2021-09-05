@@ -5,6 +5,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
@@ -24,7 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt());
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
     }
+
 }

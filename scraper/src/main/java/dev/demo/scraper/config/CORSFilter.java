@@ -18,10 +18,7 @@ import java.io.IOException;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @WebFilter("/*")
-public class CorsFilter implements Filter {
-
-    public CorsFilter() {
-    }
+public class CORSFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {

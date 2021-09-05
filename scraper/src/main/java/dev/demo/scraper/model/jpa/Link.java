@@ -2,9 +2,9 @@ package dev.demo.scraper.model.jpa;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.CollectionTable;
@@ -19,12 +19,12 @@ import javax.persistence.JoinColumn;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @ToString
-@EqualsAndHashCode
 @Entity
 public class Link {
 

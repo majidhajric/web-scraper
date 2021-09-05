@@ -46,7 +46,7 @@ class ScraperApplicationTest {
 
     private static PageDetails createPageDetails() {
         Set<String> keywords = new LinkedHashSet<>(Arrays.asList("word1", "word2", "word3"));
-        return new PageDetails(TITLE,keywords);
+        return new PageDetails(TITLE, keywords);
     }
 
     @BeforeAll

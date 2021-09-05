@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Analyzer {
+
     private static final int MIN_WORD_LENGTH = 3;
     private static final int MAX_RESULT_SIZE = 10;
 
@@ -67,4 +68,5 @@ public class Analyzer {
                 .limit(MAX_RESULT_SIZE)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
+
 }

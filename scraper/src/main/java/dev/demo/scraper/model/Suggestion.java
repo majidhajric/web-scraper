@@ -17,9 +17,9 @@ public class Suggestion {
 
     private String title;
 
-    private Set<String> keywords = new LinkedHashSet<>();
+    private Set<String> keywords;
 
-    private Set<String> tags = new LinkedHashSet<>();
+    private Set<String> tags;
 
     public Suggestion(String url, String hash, String title, Set<String> keywords, Set<String> tags) {
         this.url = url;
@@ -41,4 +41,5 @@ public class Suggestion {
 
         return suggestedTags.containsAll(link.getTags());
     }
+
 }

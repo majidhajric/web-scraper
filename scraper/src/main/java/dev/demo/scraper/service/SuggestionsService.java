@@ -7,6 +7,7 @@ import dev.demo.scraper.model.jpa.Link;
 import dev.demo.scraper.repository.LinkRepository;
 import dev.demo.scraper.utils.Analyzer;
 import dev.demo.scraper.utils.URLHashUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class SuggestionsService {
@@ -25,12 +27,6 @@ public class SuggestionsService {
     private final SuggestionsCache suggestionsCache;
 
     private final LinkRepository linkRepository;
-
-    public SuggestionsService(SuggestionsCache suggestionsCache,
-                              LinkRepository linkRepository) {
-        this.suggestionsCache = suggestionsCache;
-        this.linkRepository = linkRepository;
-    }
 
     public Suggestion createSuggestion(String userId, String url) throws ExecutionException, InterruptedException {
 
@@ -54,11 +50,12 @@ public class SuggestionsService {
 
     @Async
     CompletableFuture<PageDetails> doAnalyse(String url) {
-        try{
+        try {
             PageDetails pageDetails = Analyzer.analysePage(url);
             return CompletableFuture.completedFuture(pageDetails);
         } catch (Exception e) {
             return CompletableFuture.failedFuture(e);
         }
     }
+
 }

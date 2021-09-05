@@ -14,6 +14,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
+
     private final int status;
     private final String message;
     private String stackTrace;
@@ -33,4 +34,5 @@ public class ErrorResponse {
         private final String field;
         private final String message;
     }
+
 }

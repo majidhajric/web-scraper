@@ -19,4 +19,5 @@ public class LinkException extends RuntimeException {
         @Getter
         private final String message;
     }
+
 }

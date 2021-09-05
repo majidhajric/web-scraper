@@ -12,4 +12,5 @@ public class PageDetails {
     private final String title;
 
     private final Set<String> keywords;
+
 }

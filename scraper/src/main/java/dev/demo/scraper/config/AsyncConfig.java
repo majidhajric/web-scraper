@@ -18,7 +18,7 @@ public class AsyncConfig {
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(2);
         executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("GithubLookup-");
+        executor.setThreadNamePrefix("Lookup-");
         executor.initialize();
         return executor;
     }

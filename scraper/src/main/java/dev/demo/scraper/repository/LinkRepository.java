@@ -14,8 +14,6 @@ import java.util.Optional;
 @Repository
 public interface LinkRepository extends JpaRepository<Link, Long> {
 
-    Link save(Link link);
-
     Page<Link> findAllByUserIdOrderByCreatedAtDesc(String userId, Pageable pageable);
 
     Optional<Link> findAllByUserIdAndAndHash(String userId, String hash);
@@ -32,4 +30,5 @@ public interface LinkRepository extends JpaRepository<Link, Long> {
     List<String> findTagsByPopularity(@Param("hash") String hash);
 
     void deleteAllByUserIdAndId(String userId, Long id);
+
 }

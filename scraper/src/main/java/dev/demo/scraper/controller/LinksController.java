@@ -4,6 +4,7 @@ import dev.demo.scraper.controller.dto.LinkRequest;
 import dev.demo.scraper.controller.dto.LinkResponse;
 import dev.demo.scraper.model.jpa.Link;
 import dev.demo.scraper.service.LinksService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,16 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Slf4j
 @RestController
 @RequestMapping(path = "/api/links")
 public class LinksController {
 
     private final LinksService linksService;
-
-    public LinksController(LinksService linksService) {
-        this.linksService = linksService;
-    }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)

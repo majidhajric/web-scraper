@@ -14,4 +14,5 @@ public class CacheConfig {
     public Map<String, Suggestion> suggestionMap() {
         return new ConcurrentHashMap<>();
     }
+
 }

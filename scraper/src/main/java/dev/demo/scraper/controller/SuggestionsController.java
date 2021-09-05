@@ -3,6 +3,7 @@ package dev.demo.scraper.controller;
 import dev.demo.scraper.controller.dto.SuggestionResponse;
 import dev.demo.scraper.model.Suggestion;
 import dev.demo.scraper.service.SuggestionsService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,16 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.ExecutionException;
 
+@RequiredArgsConstructor
 @Slf4j
 @RestController
 @RequestMapping(path = "/api/suggestions")
 public class SuggestionsController {
 
     private final SuggestionsService suggestionsService;
-
-    public SuggestionsController(SuggestionsService suggestionsService) {
-        this.suggestionsService = suggestionsService;
-    }
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)

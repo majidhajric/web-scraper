@@ -41,4 +41,5 @@ public class RestExceptionHandler {
         log.error("Failed to process the request.", exception);
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND, request);
     }
+
 }
